@@ -1,0 +1,68 @@
+{% extends "core/base.html" %}
+
+{% block title %}
+<title>Item detail</title>
+{% endblock %}
+
+  {% block content %}
+  {% load static %}
+
+  <link rel="stylesheet" href="{% static 'core/itemDetail.css' %}">
+
+  <div class="container-fluid">
+    <div class='form-row'>
+      <div class='form-group col-md-4 mb-0'>
+      </div>
+
+      <div class='form-group col-md-4 mb-0'>
+
+        <h5 class="text-center"><b>Item details</b></h5>
+        <p class="text-center">Item description: {{object.description}}</p>
+        <p class="text-center">Seized by: {{object.seized_by}}</p>
+        <p class="text-center">Exhibit ref: {{object.exhibit_reference}}</p>
+        <p class="text-center">Seized time: {{object.seized_time}}</p>
+        <p class="text-center">Seized date: {{object.seized_date}}</p>
+        <p class="text-center">{% for address in object.property_group.foundaddress_set.all %}
+          Found address:
+          {% if address.flat_number != '' %}
+            Flat:{{ address.flat_number }},
+          {% endif %}
+          {% if address.house_number != '' %}
+            {{ address.house_number }},
+          {% endif %}
+          {% if address.house_name != '' %}
+            {{ address.house_name }},
+          {% endif %}
+          {% if address.road_name != '' %}
+            {{ address.road_name }},
+          {% endif %}
+          {% if address.town != '' %}
+            {{ address.town }},
+          {% endif %}
+          {% if address.postcode != '' %}
+            {{ address.postcode }}
+          {% endif %}
+        {% endfor %}
+        </p>
+        <p class="text-center">Sub Location: {{object.sub_location}}</p>
+        {% if object.notes %}
+          <p class="text-center">Notes: {{object.notes}}</p>
+        {% endif %}
+        <p class="text-center">Created time: {{object.created_time}}</p>
+        <hr>
+        <h5 class="text-center"><b>Images</b></h5>
+        <hr>
+        {% for image in object.propertyitemimage_set.all %}
+          <div class="img_container">
+            <img class="rounded mx-auto d-block border img-fluid mb-1" src="{{image.image.url}}" alt="No image"/>
+            <div class="bottom-right text-white bg-dark rounded">{{object.exhibit_reference}} img:{{image.image_number}}</div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class='form-group col-md-4 mb-0'>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

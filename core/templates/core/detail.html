@@ -1,0 +1,46 @@
+{% extends "core/base.html" %}
+
+{% block title %}
+<title>detail</title>
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+<link rel="stylesheet" href="{% static 'core/detail.css' %}">
+
+{% endblock %}
+
+{% block content %}
+
+  <div class="container-fluid">
+    <div class='form-row'>
+      <div class='form-group col-md-4 mb-0'>
+      </div>
+
+      <div class='form-group col-md-4 mb-0'>
+        <h6 class='text-center'><b>Property reference</b></h6>
+        <h6 class='text-center'>{{ object.property_reference }}</h6>
+
+        {% if object.subject_surname != Null %}
+          <p class='text-center'>Subject: {{ object.subject_surname }}</p>
+        {% endif %}
+
+        {% if object.group_ID != Null %}
+          <p class='text-center'>External Ref: {{ object.group_ID }}</p>
+        {% endif %}
+
+        <hr>
+        <h6 class='text-center'><b>Property items</b></h6>
+          <hr>
+          {% for item in object.propertyitem_set.all %}
+            <p class='text-center'>{{item}} ({{item.exhibit_reference}})</p>
+          {% endfor %}
+
+      </div>
+
+      <div class='form-group col-md-4 mb-0'>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

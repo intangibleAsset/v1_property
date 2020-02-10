@@ -1,0 +1,60 @@
+{% extends "core/base.html" %}
+
+{% block title %}
+<title>Update owner</title>
+{% endblock %}
+
+  {% block content %}
+  {% load static %}
+  {% load crispy_forms_tags %}
+
+  <link rel="stylesheet" href="{% static 'core/manage.css' %}">
+
+  <div class="container-fluid">
+    <div class='form-row'>
+      <div class='form-group col-md-4 mb-0'>
+      </div>
+
+      <div class='form-group col-md-4 mb-0'>
+
+        {% for propertyGroup in object_list %}
+        <a href="../../{{propertyGroup.id}}/addItem" class="btn btn-primary btn-block">Add new item to record</a>
+        <br>
+        <div class="card text-center">
+          <div class="card-header">
+            {{propertyGroup.property_reference}}
+          </div>
+          <div class="card-body">
+
+            <ul class="list-group list-group-flush">
+              {% for item in propertyGroup.propertyitem_set.all %}
+                <li class="list-group-item">{{item}} {{item.exhibit_reference}}</li>
+
+                {% for image in item.propertyitemimage_set.all %}
+                  {% if forloop.first %}
+                  <div class="img_container">
+                    <img class="rounded mx-auto d-block border img-fluid mb-1" src="{{image.image.url}}" alt="No image"/>
+                    <div class="bottom-right text-white bg-dark rounded">{{item.exhibit_reference}} img:{{image.image_number}}</div>
+                  </div>
+                  {% endif %}
+                {% endfor %}
+
+                <div class='btn-group' role='group'>
+                <a href="../../{{item.id}}/addImage" class="btn btn-info btn-block m-1 rounded">Add image</a>
+                <a href="../../{{item.id}}/itemDetail" class="btn btn-info btn-block m-1 rounded">View details</a>
+                </div>
+              {% endfor %}
+            </ul>
+
+          </div>
+        </div>
+        {% endfor %}
+
+      </div>
+
+      <div class='form-group col-md-4 mb-0'>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

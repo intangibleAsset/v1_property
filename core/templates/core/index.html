@@ -1,0 +1,116 @@
+{% extends "core/base.html" %}
+
+{% block title %}
+<title>Detail</title>
+{% endblock %}
+
+{% block content %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+
+<form method='POST'>
+    {% csrf_token %}
+    <div class="container-fluid">
+      <div class='form-row'>
+          <div class='form-group col-md-4 mb-0'>
+          </div>
+
+          <div class='form-group col-md-4 mb-0'>
+
+            {% if is_paginated %}
+              <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                  <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Prev</a></li>
+                {% else %}
+                  <li class="page-item disabled"><a class="page-link" href="#">Prev</a></li>
+                {% endif %}
+
+                <li class="page-item"><a class="page-link" href="">{{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</a></li>
+
+                {% if page_obj.has_next %}
+                  <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                {% else %}
+                  <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+                {% endif %}
+              </ul>
+            {% endif %}
+
+            {% for group_item in object_list %}
+              <div class="card text-center mb-3">
+                <div class="card-header">
+                  Property reference: {{ group_item.property_reference }}
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    {{ group_item.propertyitem_set.all | length }} : Items added on {{group_item.created_time | date:'Y-m-d'}}
+                  </p>
+                  <a href="../../{{group_item.id}}/detail" class="btn btn-primary btn-block">View record</a>
+                  <a href="../../{{group_item.id}}/manage" class="btn btn-primary btn-block">Manage Property</a>
+                  {% if not group_item.foundaddress_set.all and not group_item.foundlocation_set.all %}
+                    <a href="../../{{group_item.id}}/addressOrLocation" class="btn btn-danger btn-block">Add found location</a>
+                  {% endif %}
+
+                </div>
+                <div class="card-footer text-muted">
+                  Found at:
+                  {% for address in group_item.foundaddress_set.all %}
+                    {% if address.flat_number != '' %}
+                      Flat:{{ address.flat_number }},
+                    {% endif %}
+                    {% if address.house_number != '' %}
+                      {{ address.house_number }},
+                    {% endif %}
+                    {% if address.house_name != '' %}
+                      {{ address.house_name }},
+                    {% endif %}
+                    {% if address.road_name != '' %}
+                      {{ address.road_name }},
+                    {% endif %}
+                    {% if address.town != '' %}
+                      {{ address.town }},
+                    {% endif %}
+                    {% if address.postcode != '' %}
+                      {{ address.postcode }}
+                    {% endif %}
+                  {% endfor %}
+                  {% for location in group_item.foundlocation_set.all %}
+                    <a target="_blank" href="https://what3words.com/{{location.word_one}}.{{location.word_two}}.{{location.word_three}}">Open location</a>
+                  {% endfor %}
+                </div>
+              </div>
+            {% endfor %}
+
+
+          </div>
+
+          <div class='form-group col-md-4 mb-0'>
+          </div>
+          <!--<button type="submit" class="btn btn-primary">Submit</button>-->
+      </div>
+    </div>
+
+</form>
+
+{% if page_obj.number != page_obj.paginator.num_pages %}
+  {% if is_paginated %}
+    <ul class="pagination justify-content-center">
+      {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Prev</a></li>
+      {% else %}
+        <li class="page-item disabled"><a class="page-link" href="#">Prev</a></li>
+      {% endif %}
+
+      <li class="page-item"><a class="page-link" href="">{{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</a></li>
+
+      {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+      {% else %}
+        <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+      {% endif %}
+    </ul>
+  {% endif %}
+{% endif %}
+
+{% endblock %}

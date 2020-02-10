@@ -1,0 +1,29 @@
+{% extends "core/base.html" %}
+
+{% block title %}
+<title>Add property</title>
+{% endblock %}
+
+{% block content %}
+{% load static %}
+{% load crispy_forms_tags %}
+<form method='POST' enctype="multipart/form-data"> <!-- remove multipart at some point as was for imageField -->
+    {% csrf_token %}
+    <div class="container-fluid">
+      <div class='form-row'>
+          <div class='form-group col-md-4 mb-0'>
+          </div>
+          <div class='form-group col-md-4 mb-0'>
+            <p class='text-center'>Add found location</p>
+            <a href="../../{{pk}}/addFoundAddress" class="btn btn-info btn-block m-1">Address or Road &#187;</a>
+            <a href="../../{{pk}}/addFoundLocation" class="btn btn-primary btn-block m-1">Off road location &#187;</a>
+          </div>
+          <div class='form-group col-md-4 mb-0'>
+          </div>
+          <!--<button type="submit" class="btn btn-primary">Submit</button>-->
+      </div>
+    </div>
+
+</form>
+
+{% endblock %}

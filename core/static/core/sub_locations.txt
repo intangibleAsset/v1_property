@@ -1,0 +1,17 @@
+Bedroom
+Bedroom 1
+Bedroom 2
+Bedroom 3
+Bedroom 4
+Kitchen
+Living room
+Dining room
+Conservatory
+Loft
+Back garden
+Front garden
+Driveway
+Pavement outside
+Garage
+Shed
+Hallway
